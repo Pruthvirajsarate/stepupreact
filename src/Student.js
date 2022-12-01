@@ -132,6 +132,8 @@ export const Student = () => {
                 <thead>
                     <tr>
                         <th>ID</th><th>NAME</th><th>GENDER</th><th>HOBBIES</th><th>COUNTRY</th><th>ADDRESSS</th>
+                        <th> Edit </th> 
+                        <th> Delete </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -140,7 +142,10 @@ export const Student = () => {
                             const {_id,name,gender,hobbies,country,address}=obj
                             return <tr key={index}>
                               <td>{_id}</td><td>{name}</td><td>{gender}</td><td>{hobbies}</td><td>{country}</td><td>{address}</td>
+                              <td> <button className='btn btn-primary'> Edit </button></td>
+                              <td> <button className='btn btn-primary'> Delete </button></td>
                             </tr>
+
                         })
                     }
                 </tbody>
