@@ -1,7 +1,7 @@
 import axios from "axios"
-const baseUrl='http://localhost:2020/'
+// const baseUrl='http://localhost:2020/'
+ const baseUrl="https://main.d3jpukf9tktr0e.amplifyapp.com/"
 
-// const baseUrl= 'https://main.d3jpukf9tktr0e.amplifyapp.com/'
 
 class ServerCall{
 
