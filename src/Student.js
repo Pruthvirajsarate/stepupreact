@@ -4,6 +4,7 @@ export const Student = () => {
     const [formData,setFormData]=useState({name: "", gender: "", hobbies: "", country: "", address: ""})
     const [students,setStudents]=useState([])
     const [isLoading,setIsLoading]=useState(false)
+    const [isEdit,setIsEdit]=useState(false)
     useEffect(()=>{
         getStudents()
     },[])
@@ -61,6 +62,60 @@ export const Student = () => {
         })
        }
     }
+    const fnEdit=(obj)=>{
+        
+        setIsEdit(true)
+        setFormData(obj)
+    }
+    const fnDelete=(obj)=>{
+        const isOk=window.confirm('R U Sure');
+        if(isOk)
+        {
+          ServerCall.sendDelReq(`std/delete?id=${obj._id}`) 
+          .then((res)=>{
+            const{acknowledged,deletedCount}=res.data
+            if(acknowledged && deletedCount){
+                alert('succesfully deleted')
+                getStudents()
+                
+            }else{
+                alert('not deleted try again')
+            }
+          })  
+          .catch(()=>{
+            alert('semothing went wrong')
+          })
+        }
+    }
+    const fnUpdate=()=>{
+        const {name,gender,hobbies,country,address}=formData
+        if(name==""|| gender=="" || hobbies=="" || country=="" || address==""){
+            alert('Please Enter Input Values')
+            return;
+        }
+        setIsLoading(true)
+       ServerCall.sendPutReq(`std/update/${formData._id}`,{data:formData})
+       .then((res)=>{
+        const{acknowledged,modifiedCount}=res.data
+        setIsLoading(false)
+        if(acknowledged && modifiedCount){
+            alert('succesfully Updated')
+            getStudents()
+            fnCancel()
+        }else{
+            alert('not Updated, try again')
+        }
+      })  
+      .catch(()=>{
+        setIsLoading(false)
+        alert('semothing went wrong')
+      })
+    }
+    const fnCancel=()=>{
+       setIsEdit(false)
+       setFormData({name: "", gender: "", hobbies: "", country: "", address: ""})
+    }
+
   return (
     <div>
         <h1 className='text-center bg-primary py-3 mb-5 text-white'>Students From</h1>
@@ -99,15 +154,15 @@ export const Student = () => {
                 </div>
                 <div className='col-sm-3 text-start'>
                     <select name='country' className='form-control' onChange={fnChange}>
-                        <option selected={formData.country==''}>Please select</option>
-                        <option value='Ind'>India</option>
-                        <option value='Pak'>Pakistan</option>
-                        <option value='Chi'>China</option>
+                        <option  selected={formData.country==''}>   Please select</option>
+                        <option  selected={formData.country=='Ind'} value='Ind'>India</option>
+                        <option  selected={formData.country=='Pak'} value='Pak'>Pakistan</option>
+                        <option  selected={formData.country=='Chi'} value='Chi'>China</option>
                    </select>
                 </div>
             </div>
             <div className='row mb-4'>
-                <div className='col-sm-5 text-end' >
+                <div className='col-sm-5 text-end'>
                     <b>Address:</b>
                 </div>
                 <div className='col-sm-3'>
@@ -119,7 +174,20 @@ export const Student = () => {
                     
                 </div>
                 <div className='offset-sm-5 col-sm-3 text-start'>
-                    <button disabled={isLoading} onClick={fnRegister} className='btn btn-primary'><span>{isLoading ? 'Loading...' : 'Register'}</span></button>
+                    {
+                        isEdit ?
+                        <>
+                         <button disabled={isLoading} onClick={fnUpdate} className='btn btn-primary me-3'><span>{isLoading ? 'Loading...' : 'Update'}</span></button>
+                         <button onClick={fnCancel} className='btn btn-primary  '><span>Cancel</span></button>
+
+                        </>
+                        :
+                        <>
+                         <button disabled={isLoading} onClick={fnRegister} className='btn btn-primary'><span>{isLoading ? 'Loading...' : 'Register'}</span></button>
+                       
+                       </>
+                    }
+                   
                 </div>
             </div>
 
@@ -142,8 +210,8 @@ export const Student = () => {
                             const {_id,name,gender,hobbies,country,address}=obj
                             return <tr key={index}>
                               <td>{_id}</td><td>{name}</td><td>{gender}</td><td>{hobbies}</td><td>{country}</td><td>{address}</td>
-                              <td> <button className='btn btn-primary'> Edit </button></td>
-                              <td> <button className='btn btn-primary'> Delete </button></td>
+                              <td> <button onClick={()=>fnEdit(obj)} className='btn btn-primary'> Edit </button></td>
+                              <td> <button onClick={()=>fnDelete(obj)} className='btn btn-primary '> Delete </button></td>
                             </tr>
 
                         })
