@@ -118,7 +118,7 @@ export const Student = () => {
 
   return (
     <div>
-        <h1 className='text-center bg-primary py-3 mb-5 text-white'>Students From</h1>
+        <h1 style={{color:'red' }} className='text-center bg-primary py-3 mb-5 '> STUDENTS FORM </h1>
         <div className='container-fluid'>
             <div className='row mb-4'>
                 <div className='col-sm-5 text-end' >
@@ -199,9 +199,9 @@ export const Student = () => {
             <table className='table table-bordered taable-hover table-stripped'>
                 <thead>
                     <tr>
-                        <th>ID</th><th>NAME</th><th>GENDER</th><th>HOBBIES</th><th>COUNTRY</th><th>ADDRESSS</th>
-                        <th> Edit </th> 
-                        <th> Delete </th>
+                        <th>ID</th><th>NAME</th><th>GENDER</th><th>HOBBIES</th><th>COUNTRY</th><th>ADDRESS</th>
+                        <th> EDIT </th> 
+                        <th> DELETE </th>
                     </tr>
                 </thead>
                 <tbody>
